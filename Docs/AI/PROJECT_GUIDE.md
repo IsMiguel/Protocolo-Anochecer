@@ -98,7 +98,7 @@ Revisado en la rama `main` del repositorio privado el 2026-11-02:
 
 - Unity **6.6.0f1**.
 - Universal Render Pipeline **17.6.0**.
-- Input System **1.20.0**; también existe `Assets/InputSystem_Actions.inputactions`. No asumir que el mapa de acciones ya está conectado a un jugador.
+- Input System **1.20.0**; `FPSInput` conecta `Player/Move`, `Player/Look` y `Player/Sprint` desde `Assets/InputSystem_Actions.inputactions`, con respaldo de teclado/mouse si faltan.
 - AI Navigation **2.0.14**, Timeline **6.6.0**, Unity Test Framework **1.8.0**, uGUI **2.6.0** y Visual Scripting **1.9.12** están en el manifest.
 - Única escena listada en Build Settings: `Assets/Scenes/SampleScene.unity`.
 - Assets vistos: escena de plantilla, settings de URP (incluye assets PC y Mobile) y TutorialInfo. No hay aún código de gameplay propio, escena narrativa ni carpeta de arte de Protocolo Anochecer en la rama revisada.
@@ -107,7 +107,7 @@ Revisado en la rama `main` del repositorio privado el 2026-11-02:
 - Input legacy también está presente en ProjectSettings; validar el modo activo antes de escribir bindings nuevos.
 - No hay evidencia revisada de tests de juego, asmdef de gameplay, CI de build o arquitectura de código propia. Estado: desconocido / todavía sin gameplay.
 
-La rama de contexto `codex/project-context` contiene la documentación de colaboración. Las fuentes Blender y previews se incluyen en el PR #1; dos exportaciones FBX provisionales de armas ya están en Assets/ProtocoloAnochecer/Art/Models/Weapons con metadatos estables. La importación y revisión visual dentro del Editor siguen pendientes. No asumir que el proyecto local fuera de GitHub y este repositorio remoto están sincronizados.
+La rama de contexto `codex/project-context` contiene la documentación de colaboración. Las fuentes Blender y previews se incluyen en el PR #1; las dos exportaciones FBX provisionales se importaron en Unity 6.6.0f1 durante la validación de `BlockoutPrototype` y el Mauser quedó visible en la captura de primera persona. Los modelos siguen siendo provisionales y requieren revisión de detalle. No asumir que el proyecto local fuera de GitHub y este repositorio remoto están sincronizados.
 
 ## 7. Plan recomendado de desarrollo
 
@@ -174,34 +174,34 @@ Seguir Docs/AI/CLAUDE_HANDOFF_PROMPT.md. El repositorio ya tiene dos prototipos 
 - Unity 6.6.0f1, URP 17.6.0, Input System 1.20.0. Player Settings usa el nuevo Input System.
 - Assets/Scenes/SampleScene.unity sigue siendo la única escena de Build Settings.
 - Assets/ProtocoloAnochecer/Scenes/OpeningPrototype.unity: secuencia de sala de briefing/VHS, conversación en helicóptero, vuelo, aterrizaje y entrada al control del jugador.
-- Assets/ProtocoloAnochecer/Scenes/BlockoutPrototype.unity: terreno con relieve, edificio y obstáculos para movimiento FPS.
+- Assets/ProtocoloAnochecer/Scenes/BlockoutPrototype.unity: misión de blockout guardada con terreno de 128 m, camino, arboleda, coberturas, puesto de reunión, objetivo, HUD y tres blancos estáticos.
 - Generadores de Editor: Protocolo Anochecer/Crear introducción y primer mapa y Protocolo Anochecer/Crear prototipo FPS.
 - Scripts/Player/FirstPersonController.cs se usa en la apertura; Scripts/Narrative/OpeningSequenceController.cs controla las cámaras, subtítulos y transición.
-- La rama también conserva el prototipo FPS aislado en Assets/ProtocoloAnochecer/Scripts/Prototype/FPS/ (acciones del Input System, controlador y mirada). Son dos prototipos distintos; no crear un tercer controlador. Inspeccionar referencias antes de unificarlos.
+- `OpeningPrototype` conserva `FirstPersonController`; `BlockoutPrototype` reutiliza el sistema existente de `Scripts/Prototype/FPS/` (`FPSInput`, `FPSPlayerController` y `FPSCameraLook`) junto al controlador de armas. No crear un tercer controlador.
 - Los generadores ahora confirman antes de reemplazar las escenas, guardan los meshes del terreno como assets y evitan crear copias numeradas de las escenas. Ambos terrenos usan UVs y un material procedural de campo europeo; las estructuras siguen en blockout blanco. La apertura aplana el terreno alrededor de la zona de aterrizaje, incorpora tres escalones bajos y luz direccional.
 - El controlador de la apertura vuelve a bloquear el cursor al activarse, lee WASD aunque no haya mouse y añade correr con Shift. Al terminar la secuencia, posiciona el jugador real en el marcador de llegada.
 
 ### Arte fuente
 
 - ArtSource/Blender/ contiene prototipos fuente y vistas previas del Bell UH-1H, un campus chaqueño ficticio y armas de los años 40.
-- Los archivos .blend son fuentes editables y los modelos siguen siendo provisionales, no finales. Dos exportaciones FBX de armas están ahora en Assets/ProtocoloAnochecer/Art/Models/Weapons con GUIDs estables; falta comprobar su importación y apariencia dentro de Unity. El terreno ya tiene un albedo y un normal map procedural tileables conectados por los generadores; falta revisarlos visualmente. El texturizado de los modelos sigue pendiente.
+- Los archivos .blend son fuentes editables y los modelos siguen siendo provisionales, no finales. Las dos exportaciones FBX de armas se importaron y la vista del Mauser se revisó en Play Mode; todavía falta revisar el encuadre del M1911 y el detalle de las armas. El terreno usa albedo y normal map procedural; la captura confirma el campo y camino, pero no se hizo una revisión cercana del tiling. El texturizado de los modelos sigue pendiente.
 - El Bell UH-1H es de posguerra y choca con una apertura situada en los años 40. No incorporarlo a esa apertura hasta que el creador decida la cronología o el transporte.
 
 ### Estado de verificación
 
-Validación parcial en Unity 6.6.0f1 (2026-11-02): después de la importación, Console mostraba 0 mensajes, 0 advertencias y 0 errores. En Play Mode, `OpeningPrototype` avanzó hasta la fase jugable y mostró el objetivo «Encontrá al resto de la unidad». Se salió de Play Mode sin guardar cambios.
+Validación parcial en Unity 6.6.0f1 (2026-11-02): `OpeningPrototype` avanzó hasta la fase jugable y mostró el objetivo «Encontrá al resto de la unidad». En una copia de trabajo aislada, Unity generó `BlockoutPrototype`, importó los materiales/FBX y entró a Play Mode durante el smoke de arranque; el Editor guardó una captura de la cámara y salió de Play Mode sin guardar cambios de runtime.
 
-Todavía no se regeneraron las escenas desde sus menús ni se verificaron `BlockoutPrototype`, los controles WASD/mouse/Shift/Esc, las colisiones, los escalones, el tiling del material sobre el terreno ni un build. Esta prueba no basta para afirmar que el prototipo está listo; completar esos pasos en Unity antes de marcarlo como verificado.
+`BlockoutPrototype` ya está guardada en el proyecto. El smoke confirmó el jugador y sus componentes FPS, las referencias del controlador de armas, ambos FBX, tres blancos, objetivo y HUD. No se ejercitaron manualmente el movimiento, mouse, Shift/Esc, disparo, recarga, cambio de arma, colisiones ni llegada al puesto; tampoco se hizo un build. No marcar el prototipo como listo hasta recorrer esos casos.
 
-En la revisión del 2026-11-02 se detectó y corrigió un riesgo en los generadores: ambos abrían una escena vacía en modo `Single` sin preguntar antes si la escena activa tenía cambios sin guardar. `OpeningSequenceBuilder` y `BlockoutSceneBuilder` ahora llaman a `SaveCurrentModifiedScenesIfUserWantsTo()` antes de crear la escena; cancelar conserva la escena activa. La asamblea generada por Unity se compiló con `dotnet build Assembly-CSharp-Editor.csproj --no-restore`: compilación correcta, 0 advertencias y 0 errores. Esto valida compilación de C# con las referencias generadas, pero no sustituye la compilación dentro del Editor ni prueba el comportamiento del diálogo. La instancia del Editor mantuvo `Temp/UnityLockfile`, por lo que no se regeneraron escenas ni se repitieron las pruebas de Play Mode durante esta revisión.
+En la revisión del 2026-11-02 se detectó y corrigió un riesgo en los generadores: ambos abrían una escena vacía en modo `Single` sin preguntar antes si la escena activa tenía cambios sin guardar. `OpeningSequenceBuilder` y `BlockoutSceneBuilder` ahora llaman a `SaveCurrentModifiedScenesIfUserWantsTo()` antes de crear la escena; cancelar conserva la escena activa. La asamblea generada por Unity se compiló con `dotnet build Assembly-CSharp-Editor.csproj --no-restore`: compilación correcta, 0 advertencias y 0 errores. En esa primera revisión no se regeneraron escenas; la limitación del Editor se resolvió en la validación posterior de la misión FPS.
 
 ### Misión FPS en desarrollo (EXPERIMENTAL / contenido provisional)
 
 - `BlockoutSceneBuilder` ahora genera un campo amplio con camino de tierra, claros, arboleda, cobertura, un puesto de reunión transitable y blancos estáticos para probar disparos. El objetivo provisional es llegar al puesto; los blancos no son enemigos ni definen facciones o historia.
-- La escena generada usa el `FirstPersonController` ya utilizado por la apertura. Añade brazos/manos de blockout y un HUD con instrucciones, objetivo, arma y munición.
+- La escena usa el controlador reutilizable del prototipo FPS (`FPSInput`, `FPSPlayerController`, `FPSCameraLook`) y `FirstPersonWeaponController`. Añade brazos/manos de blockout y un HUD con instrucciones, objetivo, arma y munición.
 - `FirstPersonWeaponController` implementa dos armas con fuego semiautomático por hitscan, alcance, munición, recarga, cambio con 1/2, retroceso visual y flash. El Mauser 1909 y el M1911 proceden de los modelos Blender existentes, exportados como FBX; se mantienen como props provisionales, no como selección histórica final.
 - Se añadieron `PrototypeTarget` para impactos/daño y `MissionObjectiveTrigger` para completar el objetivo al entrar al puesto. No se implementó IA de enemigos ni daño al jugador.
-- Verificación de código: `dotnet build Assembly-CSharp-Editor.csproj --no-restore` compila los proyectos C# generados por Unity, con 0 advertencias y 0 errores. No se regeneró `BlockoutPrototype` ni se probó la partida: el Editor conectado no fue accesible y una instancia batch aislada perdió la conexión con el servicio de licencias antes de importar la escena.
-- El siguiente paso es abrir Unity 6.6.0f1, esperar la importación y ejecutar `Protocolo Anochecer/Crear prototipo FPS`. Revisar en Game View el encuadre de manos/armas, camino, colisiones, el disparo/recarga/cambio, y el disparador del objetivo; regenerar solo si se acepta reemplazar `BlockoutPrototype`.
+- Verificación Unity 6.6.0f1 en copia aislada: el generador guardó y abrió la escena; el smoke de Play Mode confirmó los componentes/referencias del jugador, armas y objetivo, capturó la vista y salió sin errores de runtime registrados. La captura revisó el camino, arboleda, puesto, brazos y Mauser. Esto verifica arranque y referencias, no controles físicos ni una partida completa.
+- Pendiente: recorrer WASD/mouse/Shift/Esc, probar disparo/recarga/cambio en ambos modelos, confirmar impacto en los blancos, entrar al puesto y revisar colisiones en el terreno; luego hacer un build. La escena no está agregada a Build Settings y sigue siendo experimental.
 
 Los cambios locales de nube/calidad/URP y Assets/TutorialInfo/Icons/URP.png son ajenos a esta entrega; no incluirlos en commits salvo que el creador los solicite.

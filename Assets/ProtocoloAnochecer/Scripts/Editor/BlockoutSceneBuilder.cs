@@ -25,7 +25,8 @@ public static class BlockoutSceneBuilder
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
         GameObject environment = new GameObject("Blockout Environment");
-        CreateTerrain(environment.transform, whiteMaterial);
+        Material groundMaterial = EuropeanFieldMaterialBuilder.GetOrCreate(whiteMaterial);
+        CreateTerrain(environment.transform, groundMaterial);
         CreateBuilding(environment.transform, whiteMaterial, new Vector3(-9f, 0f, -7f));
         CreateObstacles(environment.transform, whiteMaterial);
         CreateLighting();
@@ -63,6 +64,7 @@ public static class BlockoutSceneBuilder
         const int resolution = 65;
         const float halfSize = 32f;
         Vector3[] vertices = new Vector3[resolution * resolution];
+        Vector2[] uvs = new Vector2[resolution * resolution];
         int[] triangles = new int[(resolution - 1) * (resolution - 1) * 6];
 
         for (int z = 0; z < resolution; z++)
@@ -71,7 +73,9 @@ public static class BlockoutSceneBuilder
             {
                 float worldX = x - halfSize;
                 float worldZ = z - halfSize;
-                vertices[z * resolution + x] = new Vector3(worldX, TerrainHeight(worldX, worldZ), worldZ);
+                int vertexIndex = z * resolution + x;
+                vertices[vertexIndex] = new Vector3(worldX, TerrainHeight(worldX, worldZ), worldZ);
+                uvs[vertexIndex] = new Vector2(worldX / 6f, worldZ / 6f);
             }
         }
 
@@ -98,7 +102,9 @@ public static class BlockoutSceneBuilder
         terrainMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         terrainMesh.vertices = vertices;
         terrainMesh.triangles = triangles;
+        terrainMesh.uv = uvs;
         terrainMesh.RecalculateNormals();
+        terrainMesh.RecalculateTangents();
         terrainMesh.RecalculateBounds();
         string meshAssetPath = AssetDatabase.GenerateUniqueAssetPath(TerrainMeshAssetPath);
         AssetDatabase.CreateAsset(terrainMesh, meshAssetPath);

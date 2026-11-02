@@ -31,7 +31,7 @@ public static class OpeningSequenceBuilder
 
         Material screen = GetOrCreateScreenMaterial();
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-        CreateTerrain(white);
+        CreateTerrain(EuropeanFieldMaterialBuilder.GetOrCreate(white));
         CreateLighting();
         CreateTelevisionRoom(white, screen, out Text televisionText, out Transform televisionShot);
         CreateHelicopter(white, out Transform helicopter, out Transform rotor, out Transform cabinShot, out Transform flightShot);
@@ -88,6 +88,7 @@ public static class OpeningSequenceBuilder
         const int zCount = 33;
         const float spacing = 2f;
         Vector3[] vertices = new Vector3[xCount * zCount];
+        Vector2[] uvs = new Vector2[xCount * zCount];
         int[] triangles = new int[(xCount - 1) * (zCount - 1) * 6];
 
         for (int z = 0; z < zCount; z++)
@@ -96,7 +97,9 @@ public static class OpeningSequenceBuilder
             {
                 float worldX = -16f + x * spacing;
                 float worldZ = -30f + z * spacing;
-                vertices[z * xCount + x] = new Vector3(worldX, TerrainHeight(worldX, worldZ), worldZ);
+                int vertexIndex = z * xCount + x;
+                vertices[vertexIndex] = new Vector3(worldX, TerrainHeight(worldX, worldZ), worldZ);
+                uvs[vertexIndex] = new Vector2(worldX / 8f, worldZ / 8f);
             }
         }
 
@@ -121,7 +124,9 @@ public static class OpeningSequenceBuilder
         Mesh mesh = new Mesh { name = "Opening Terrain" };
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.uv = uvs;
         mesh.RecalculateNormals();
+        mesh.RecalculateTangents();
         mesh.RecalculateBounds();
         string meshAssetPath = AssetDatabase.GenerateUniqueAssetPath(TerrainMeshAssetPath);
         AssetDatabase.CreateAsset(mesh, meshAssetPath);

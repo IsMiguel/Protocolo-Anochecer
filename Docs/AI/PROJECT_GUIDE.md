@@ -178,13 +178,13 @@ Seguir Docs/AI/CLAUDE_HANDOFF_PROMPT.md. El repositorio ya tiene dos prototipos 
 - Generadores de Editor: Protocolo Anochecer/Crear introducción y primer mapa y Protocolo Anochecer/Crear prototipo FPS.
 - Scripts/Player/FirstPersonController.cs se usa en la apertura; Scripts/Narrative/OpeningSequenceController.cs controla las cámaras, subtítulos y transición.
 - La rama también conserva el prototipo FPS aislado en Assets/ProtocoloAnochecer/Scripts/Prototype/FPS/ (acciones del Input System, controlador y mirada). Son dos prototipos distintos; no crear un tercer controlador. Inspeccionar referencias antes de unificarlos.
-- Los generadores ahora confirman antes de reemplazar las escenas, guardan los meshes del terreno como assets y evitan crear copias numeradas de las escenas. La apertura aplana el terreno alrededor de la zona de aterrizaje, incorpora tres escalones bajos y luz direccional.
+- Los generadores ahora confirman antes de reemplazar las escenas, guardan los meshes del terreno como assets y evitan crear copias numeradas de las escenas. Ambos terrenos usan UVs y un material procedural de campo europeo; las estructuras siguen en blockout blanco. La apertura aplana el terreno alrededor de la zona de aterrizaje, incorpora tres escalones bajos y luz direccional.
 - El controlador de la apertura vuelve a bloquear el cursor al activarse, lee WASD aunque no haya mouse y añade correr con Shift. Al terminar la secuencia, posiciona el jugador real en el marcador de llegada.
 
 ### Arte fuente
 
 - ArtSource/Blender/ contiene prototipos fuente y vistas previas del Bell UH-1H, un campus chaqueño ficticio y armas de los años 40.
-- Son prototipos editables, no modelos finales ni assets importados en Unity. Las texturas finales y la integración visual siguen pendientes.
+- Son prototipos editables, no modelos finales ni assets importados en Unity. El terreno ya tiene un albedo y un normal map procedural tileables conectados por los generadores; falta revisarlos visualmente en Unity. El texturizado de los modelos sigue pendiente.
 - El Bell UH-1H es de posguerra y choca con una apertura situada en los años 40. No incorporarlo a esa apertura hasta que el creador decida la cronología o el transporte.
 
 ### Estado de verificación

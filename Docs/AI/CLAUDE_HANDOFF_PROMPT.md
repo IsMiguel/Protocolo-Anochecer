@@ -17,7 +17,7 @@ Codex lleva actualmente el desarrollo completo del juego. Claude queda como rele
 - Secuencia: Scripts/Narrative/OpeningSequenceController.cs.
 - Generadores: Scripts/Editor/OpeningSequenceBuilder.cs y BlockoutSceneBuilder.cs.
 - También existe un prototipo FPS aislado en Scripts/Prototype/FPS/ que utiliza InputSystem_Actions.inputactions. No agregues otro controlador. Primero compara qué escena usa cada sistema y propone una unificación pequeña solo si hace falta.
-- Los generadores ahora guardan meshes de terreno como assets, iluminan la escena de apertura, aplanan el área de aterrizaje, usan escalones bajos y preguntan antes de regenerar una escena. El mesh de cada regeneración se conserva con nombre único.
+- Los generadores guardan meshes de terreno como assets, confirman antes de reemplazar escenas y conservan cada mesh generado con nombre único. Ambos terrenos usan UVs con un albedo y normal map procedural tileables de campo europeo; las estructuras siguen en blockout blanco. La apertura aplana el área de aterrizaje, usa escalones bajos y tiene luz direccional.
 - ArtSource/Blender/ contiene prototipos .blend y vistas previas de un Bell UH-1H, un campus chaqueño ficticio y armas de los años 40. No son modelos finales, ni están importados como assets de Unity; texturizado e integración aún pendientes.
 - El UH-1H es posterior a la Segunda Guerra Mundial, mientras que la apertura lo sitúa en Europa en los años 40. Mantén el helicóptero de la escena como blockout; no uses el UH-1H en esa escena sin una decisión del creador.
 - Los cambios de esta iteración todavía no se han compilado ni probado en Unity. No digas que la escena funciona hasta verificarlo.
@@ -26,7 +26,7 @@ Codex lleva actualmente el desarrollo completo del juego. Claude queda como rele
 
 1. Abre el proyecto Unity con la versión indicada y espera a que termine la importación. No cambies paquetes ni settings globales.
 2. Revisa Console y el diff; confirma que no hay referencias rotas.
-3. Ejecuta Protocolo Anochecer/Crear introducción y primer mapa. Si ya existe, la herramienta pide confirmación antes de reemplazarla. Revisa que Unity genere el mesh asset y su .meta.
+3. Ejecuta Protocolo Anochecer/Crear introducción y primer mapa. Si ya existe, la herramienta pide confirmación antes de reemplazarla. Revisa que Unity genere el material European_Field.mat, los meshes y sus .meta; ajusta la escala de tiling solo después de ver el terreno en Play Mode.
 4. Ejecuta Protocolo Anochecer/Crear prototipo FPS y verifica también que su terreno quede persistente y no produzca otra copia numerada de la escena.
 5. En OpeningPrototype, comprueba el orden de briefing, conversación, vuelo, aterrizaje y control. En Play, verifica WASD, mirada con mouse, Shift, Esc, cursor bloqueado al tomar control y colisiones en cada escalón.
 6. En BlockoutPrototype, recorre rampa, escalones y obstáculos con el CharacterController.
@@ -35,7 +35,7 @@ Codex lleva actualmente el desarrollo completo del juego. Claude queda como rele
 
 ## Lo que queda después de validar
 
-- Integrar texturas de terreno, concreto y equipo con materiales URP bien configurados; mantener paletas sobrias y superficies legibles. No reemplazar el blockout blanco sin conservar una escena/prototipo fácil de comparar.
+- Revisar en Unity el albedo/normal del terreno y corregir tiling o intensidad si se notan repetidos. Después crear texturas/materiales para concreto y modelos de equipo; mantener paletas sobrias y conservar las estructuras blancas como referencia de blockout.
 - Mejorar modelos de Blender e importarlos a Unity solo cuando se revise su escala, orientación, malla, pivotes y colisiones. Las vistas previas no prueban que el modelo sea final.
 - Acordar la cronología y transporte de la apertura antes de incorporar modelos históricos.
 - Continuar interacción y objetivos cuando el creador lo pida. No implementar armas completas, enemigos, rebobinado ni nuevas escenas por suposición.

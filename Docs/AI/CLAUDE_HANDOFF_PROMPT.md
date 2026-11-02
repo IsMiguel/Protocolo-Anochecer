@@ -20,7 +20,7 @@ Codex lleva actualmente el desarrollo completo del juego. Claude queda como rele
 - Los generadores guardan meshes de terreno como assets, confirman antes de reemplazar escenas y conservan cada mesh generado con nombre único. Ambos terrenos usan UVs con un albedo y normal map procedural tileables de campo europeo; las estructuras siguen en blockout blanco. La apertura aplana el área de aterrizaje, usa escalones bajos y tiene luz direccional.
 - ArtSource/Blender/ contiene prototipos .blend y vistas previas de un Bell UH-1H, un campus chaqueño ficticio y armas de los años 40. No son modelos finales, ni están importados como assets de Unity; texturizado e integración aún pendientes.
 - El UH-1H es posterior a la Segunda Guerra Mundial, mientras que la apertura lo sitúa en Europa en los años 40. Mantén el helicóptero de la escena como blockout; no uses el UH-1H en esa escena sin una decisión del creador.
-- Los cambios de esta iteración todavía no se han compilado ni probado en Unity. No digas que la escena funciona hasta verificarlo.
+- Validación parcial el 2026-11-02 en Unity 6.6.0f1: Console mostró 0 mensajes, 0 advertencias y 0 errores tras importar; `OpeningPrototype` llegó a Play Mode hasta mostrar el objetivo «Encontrá al resto de la unidad». Esto no valida aún los controles, la regeneración de escenas, `BlockoutPrototype`, colisiones, materiales ni un build. Completá esas comprobaciones y reporta solo los resultados observados.
 
 ## Primera tarea de relevo: validar e integrar lo existente
 

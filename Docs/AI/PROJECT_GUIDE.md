@@ -189,6 +189,8 @@ Seguir Docs/AI/CLAUDE_HANDOFF_PROMPT.md. El repositorio ya tiene dos prototipos 
 
 ### Estado de verificación
 
-Los cambios de scripts y los generadores no se han compilado ni probado en Unity todavía. Al abrir Unity, esperar la importación, revisar Console, regenerar ambas escenas desde sus menús y probar en Play Mode. No afirmar que funciona hasta completar esa comprobación.
+Validación parcial en Unity 6.6.0f1 (2026-11-02): después de la importación, Console mostraba 0 mensajes, 0 advertencias y 0 errores. En Play Mode, `OpeningPrototype` avanzó hasta la fase jugable y mostró el objetivo «Encontrá al resto de la unidad». Se salió de Play Mode sin guardar cambios.
+
+Todavía no se regeneraron las escenas desde sus menús ni se verificaron `BlockoutPrototype`, los controles WASD/mouse/Shift/Esc, las colisiones, los escalones, el tiling del material sobre el terreno ni un build. Esta prueba no basta para afirmar que el prototipo está listo; completar esos pasos en Unity antes de marcarlo como verificado.
 
 Los cambios locales de nube/calidad/URP y Assets/TutorialInfo/Icons/URP.png son ajenos a esta entrega; no incluirlos en commits salvo que el creador los solicite.

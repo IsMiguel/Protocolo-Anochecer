@@ -139,9 +139,8 @@ Crear modelos y materiales propios, importar con escala y orientación consisten
 
 ## 8. Guía de colaboración Claude + Codex + creador
 
-- Claude: código de juego, scripts, arquitectura ligera, input, interacción, herramientas de editor y documentación técnica.
-- Codex (este chat): modelos 3D, UV y texturas, materiales/shaders URP, props, composición visual y preparación/importación de assets.
-- Creador: autoridad final sobre canon, arte final, historia, referencias y cambios que afecten la visión.
+- Codex lleva el desarrollo del juego y los assets visuales. Claude queda como relevo para tareas acotadas de código, integración y verificación cuando el creador lo indique.
+- El creador conserva la decisión final sobre canon, arte final, historia, referencias y cambios que afecten la visión.
 - Trabajar en ramas distintas o rutas de archivos distintas. No editar simultáneamente la misma escena, prefab, script, material o modelo.
 - No enviar tokens, passwords ni archivos con secretos en chats. Usar los permisos/conectores de GitHub de cada entorno.
 - Abrir PR o compartir cambios y revisar el diff antes de integrar. No empujar directamente a `main`.
@@ -164,4 +163,32 @@ Crear modelos y materiales propios, importar con escala y orientación consisten
 
 ## 10. Siguiente tarea recomendada para Claude
 
-Abrir el repo `IsMiguel/Protocolo-Anochecer`, leer `CLAUDE.md` y esta guía, revisar el estado actual de Unity y diseñar el **Hito 1: jugador FPS controlable** en una escena nueva. Presentar brevemente el plan y archivos a modificar antes de implementarlo. Usar la rama `claude/fps-foundation` desde `main` si está disponible; preservar `SampleScene` y evitar cambiar settings de proyecto sin necesidad. Implementar y entregar un prototipo mínimo con pasos de verificación. Las decisiones de input de escena deben usar el paquete existente. No integrar modelos, texturas ni narrativa nueva.
+Seguir Docs/AI/CLAUDE_HANDOFF_PROMPT.md. El repositorio ya tiene dos prototipos locales y una base FPS; no crear otro jugador ni otra escena antes de inspeccionar los existentes. La prioridad es abrir Unity, regenerar y verificar las escenas OpeningPrototype y BlockoutPrototype, corregir solo fallos reproducibles y actualizar este documento con lo que realmente se probó.
+
+## 11. Estado actual del prototipo (2026-11-02)
+
+**Rama de trabajo:** codex/fps-foundation, vinculada al PR borrador #1 contra main. No fusionar sin revisión del creador.
+
+### Proyecto Unity local
+
+- Unity 6.6.0f1, URP 17.6.0, Input System 1.20.0. Player Settings usa el nuevo Input System.
+- Assets/Scenes/SampleScene.unity sigue siendo la única escena de Build Settings.
+- Assets/ProtocoloAnochecer/Scenes/OpeningPrototype.unity: secuencia de sala de briefing/VHS, conversación en helicóptero, vuelo, aterrizaje y entrada al control del jugador.
+- Assets/ProtocoloAnochecer/Scenes/BlockoutPrototype.unity: terreno con relieve, edificio y obstáculos para movimiento FPS.
+- Generadores de Editor: Protocolo Anochecer/Crear introducción y primer mapa y Protocolo Anochecer/Crear prototipo FPS.
+- Scripts/Player/FirstPersonController.cs se usa en la apertura; Scripts/Narrative/OpeningSequenceController.cs controla las cámaras, subtítulos y transición.
+- La rama también conserva el prototipo FPS aislado en Assets/ProtocoloAnochecer/Scripts/Prototype/FPS/ (acciones del Input System, controlador y mirada). Son dos prototipos distintos; no crear un tercer controlador. Inspeccionar referencias antes de unificarlos.
+- Los generadores ahora confirman antes de reemplazar las escenas, guardan los meshes del terreno como assets y evitan crear copias numeradas de las escenas. La apertura aplana el terreno alrededor de la zona de aterrizaje, incorpora tres escalones bajos y luz direccional.
+- El controlador de la apertura vuelve a bloquear el cursor al activarse, lee WASD aunque no haya mouse y añade correr con Shift. Al terminar la secuencia, posiciona el jugador real en el marcador de llegada.
+
+### Arte fuente
+
+- ArtSource/Blender/ contiene prototipos fuente y vistas previas del Bell UH-1H, un campus chaqueño ficticio y armas de los años 40.
+- Son prototipos editables, no modelos finales ni assets importados en Unity. Las texturas finales y la integración visual siguen pendientes.
+- El Bell UH-1H es de posguerra y choca con una apertura situada en los años 40. No incorporarlo a esa apertura hasta que el creador decida la cronología o el transporte.
+
+### Estado de verificación
+
+Los cambios de scripts y los generadores no se han compilado ni probado en Unity todavía. Al abrir Unity, esperar la importación, revisar Console, regenerar ambas escenas desde sus menús y probar en Play Mode. No afirmar que funciona hasta completar esa comprobación.
+
+Los cambios locales de nube/calidad/URP y Assets/TutorialInfo/Icons/URP.png son ajenos a esta entrega; no incluirlos en commits salvo que el creador los solicite.

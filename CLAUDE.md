@@ -1,26 +1,15 @@
 # CLAUDE.md — Protocolo Anochecer
 
-Antes de modificar código, escenas, prefabs o assets:
+Antes de modificar el juego, lee Docs/AI/PROJECT_GUIDE.md y Docs/AI/CLAUDE_HANDOFF_PROMPT.md. Inspecciona la rama, el diff, Unity y los assets existentes antes de editar.
 
-1. Lee `Docs/AI/PROJECT_GUIDE.md` completo.
-2. Inspecciona el repositorio y confirma la rama, Unity version, packages, escenas y archivos existentes.
-3. Respeta los niveles CANON / PROVISIONAL / EXPERIMENTAL descritos en la guía.
-4. No inventes lore ni cierres misterios abiertos. Si falta una decisión narrativa, usa un placeholder marcado o pregunta.
-5. Mantén los cambios pequeños, reversibles y compatibles con Unity 6.6.0f1 + URP 17.6.0.
-6. No reescribas `SampleScene` ni toques arte, texturas, shaders o modelos asignados a Codex salvo coordinación explícita.
-7. No añadas paquetes, no cambies settings globales, no borres assets ni trabajes directamente en `main` sin autorización específica.
-8. Al corregir errores, reproduce y localiza primero; aplica la solución mínima y verifica.
-9. No afirmes que una escena compila o funciona si no lo verificaste en Unity.
-10. Entrega un resumen de archivos, cambios, decisiones provisionales, verificación y pasos para abrir/probar.
+- Codex lleva ahora el desarrollo del juego y sus assets; Claude es relevo para tareas acotadas de programación e integración cuando el creador lo indique.
+- No crees un tercer controlador o escena FPS sin comparar los dos prototipos existentes.
+- Respeta los niveles CANON / PROVISIONAL / EXPERIMENTAL. No inventes lore ni cierres misterios.
+- Mantén compatibilidad con Unity 6.6.0f1, URP 17.6.0 e Input System 1.20.0.
+- No reescribas Assets/Scenes/SampleScene.unity, cambies Player Settings, agregues paquetes o borres assets sin necesidad justificada.
+- Deja arte, texturas, shaders y modelos existentes intactos salvo que la tarea incluya explícitamente esos archivos.
+- Trabaja desde una rama propia o la rama que el creador asigne. No trabajes directamente en main; usa PR.
+- No incluyas los cambios locales no relacionados en ProjectSettings/ ni Assets/TutorialInfo/Icons/URP.png.
+- No afirmes que compiló o funcionó si no se verificó en Unity. Entrega archivos, decisiones provisionales, resultados de verificación y pasos para probar.
 
-## División de tareas acordada
-
-- Claude: C# y gameplay, sistemas de input/interacción, herramientas y documentación técnica.
-- Codex: modelos 3D, materiales, texturas, props y su integración visual en URP.
-- Creador: decisiones de canon y aprobación artística/narrativa.
-
-Usa una rama propia y PR para integrar. Evita editar el mismo archivo que Codex. No compartas tokens o credenciales en conversaciones.
-
-## Primera tarea autorizada
-
-Seguir “Siguiente tarea recomendada para Claude” en `Docs/AI/PROJECT_GUIDE.md`: inspeccionar el proyecto y luego proponer/implementar el Hito 1, un jugador FPS mínimo en escena separada, preservando la escena de plantilla. Mantener cualquier decisión temporal identificada como experimental.
+La próxima tarea y el estado detallado están en Docs/AI/CLAUDE_HANDOFF_PROMPT.md.

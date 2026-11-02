@@ -1,27 +1,43 @@
-# Prompt de inicio para Claude — Protocolo Anochecer
+# Relevo para Claude — Protocolo Anochecer
 
-Trabajá sobre el repositorio privado https://github.com/IsMiguel/Protocolo-Anochecer. Si tu sesión no tiene acceso, pedí que conecten tu cuenta a GitHub; no solicites ni aceptes que peguen tokens o contraseñas en el chat.
+Trabaja en https://github.com/IsMiguel/Protocolo-Anochecer, rama codex/fps-foundation y PR borrador #1. Lee CLAUDE.md y Docs/AI/PROJECT_GUIDE.md completos antes de tocar archivos. Si la rama no está sincronizada, inspecciona primero git status, git log y el diff; conserva cualquier cambio local y no pidas que peguen tokens.
 
-Antes de tocar archivos, leé `CLAUDE.md` y `Docs/AI/PROJECT_GUIDE.md`. El documento de guía resume el canon, las ideas provisionales, la dirección de arte, el estado real del repo y las tareas recomendadas.
+## Dirección del trabajo
 
-## Reparto de trabajo
+Codex lleva actualmente el desarrollo completo del juego. Claude queda como relevo para resolver tareas de C#, integración y verificación que el creador le asigne. No cambies canon, diálogos definitivos, modelos, materiales ni texturas sin una tarea explícita. El creador decide historia y arte.
 
-- Tu responsabilidad: scripts C#, gameplay y documentación técnica.
-- Codex se ocupa de modelos 3D, materiales, texturas y su integración visual.
-- El creador conserva la decisión final sobre canon, historia y arte.
-- Evitá editar los mismos archivos que Codex y usá ramas/PRs para integrar.
+## Estado del proyecto
 
-## Tu primera tarea
+- Unity 6.6.0f1, URP 17.6.0, Input System 1.20.0. Proyecto PC y solo Input System nuevo.
+- SampleScene sigue siendo la única escena en Build Settings; debe conservarse.
+- Assets/ProtocoloAnochecer/Scenes/OpeningPrototype.unity: presentación militar/VHS, charla de dos personajes en el helicóptero, vuelo a Europa, aterrizaje y entrega del control al jugador.
+- Assets/ProtocoloAnochecer/Scenes/BlockoutPrototype.unity: terreno, edificio y obstáculos para recorrer con el jugador.
+- Menús para generarlas: Protocolo Anochecer/Crear introducción y primer mapa y Protocolo Anochecer/Crear prototipo FPS.
+- Control de la apertura: Scripts/Player/FirstPersonController.cs (WASD, mouse, gravedad, Shift para correr, Esc/clic para cursor).
+- Secuencia: Scripts/Narrative/OpeningSequenceController.cs.
+- Generadores: Scripts/Editor/OpeningSequenceBuilder.cs y BlockoutSceneBuilder.cs.
+- También existe un prototipo FPS aislado en Scripts/Prototype/FPS/ que utiliza InputSystem_Actions.inputactions. No agregues otro controlador. Primero compara qué escena usa cada sistema y propone una unificación pequeña solo si hace falta.
+- Los generadores ahora guardan meshes de terreno como assets, iluminan la escena de apertura, aplanan el área de aterrizaje, usan escalones bajos y preguntan antes de regenerar una escena. El mesh de cada regeneración se conserva con nombre único.
+- ArtSource/Blender/ contiene prototipos .blend y vistas previas de un Bell UH-1H, un campus chaqueño ficticio y armas de los años 40. No son modelos finales, ni están importados como assets de Unity; texturizado e integración aún pendientes.
+- El UH-1H es posterior a la Segunda Guerra Mundial, mientras que la apertura lo sitúa en Europa en los años 40. Mantén el helicóptero de la escena como blockout; no uses el UH-1H en esa escena sin una decisión del creador.
+- Los cambios de esta iteración todavía no se han compilado ni probado en Unity. No digas que la escena funciona hasta verificarlo.
 
-Implementar el **Hito 1: jugador FPS mínimo, funcional y fácil de probar**, respetando Unity 6.6.0f1, URP 17.6.0 y el Input System 1.20.0 que ya aparecen en el proyecto.
+## Primera tarea de relevo: validar e integrar lo existente
 
-1. Revisá la rama y el estado actual del repo; inspeccioná paquetes, escena de muestra, Input Actions, Player Settings y referencias relevantes.
-2. Conservá `Assets/Scenes/SampleScene.unity`; creá una escena separada para el prototipo y agrégala a Build Settings solo si es necesario para abrir/probarla sin desplazar otras escenas.
-3. Antes de implementar, informá en pocas líneas el plan y los archivos previstos. Luego seguí con el cambio mínimo sin esperar otra aprobación.
-4. Añadí únicamente lo necesario para caminar, mirar con mouse, correr si es sencillo y probar colisiones en un bloqueout básico. Interacción puede quedar para el siguiente hito.
-5. No inventes el argumento, no escribas diálogos/canon, no implementes el arma completa, enemigos, rebobinado ni la cinemática en esta tarea.
-6. No cambies settings globales ni agregues paquetes sin una necesidad comprobada. Usá el Input System que ya está instalado y evitá mezclarlo accidentalmente con el Input Manager legacy.
-7. Dejá pasos concretos para abrir la escena, entrar en Play Mode y probar los controles. Si no pudiste ejecutar Unity, indicá claramente qué quedó sin verificar.
-8. Entregá el trabajo en la rama `claude/fps-foundation` y prepará un PR contra `main`, sin fusionarlo. Resumí archivos cambiados, controles, riesgos y verificación.
+1. Abre el proyecto Unity con la versión indicada y espera a que termine la importación. No cambies paquetes ni settings globales.
+2. Revisa Console y el diff; confirma que no hay referencias rotas.
+3. Ejecuta Protocolo Anochecer/Crear introducción y primer mapa. Si ya existe, la herramienta pide confirmación antes de reemplazarla. Revisa que Unity genere el mesh asset y su .meta.
+4. Ejecuta Protocolo Anochecer/Crear prototipo FPS y verifica también que su terreno quede persistente y no produzca otra copia numerada de la escena.
+5. En OpeningPrototype, comprueba el orden de briefing, conversación, vuelo, aterrizaje y control. En Play, verifica WASD, mirada con mouse, Shift, Esc, cursor bloqueado al tomar control y colisiones en cada escalón.
+6. En BlockoutPrototype, recorre rampa, escalones y obstáculos con el CharacterController.
+7. Si encuentras un error, reproduce y corrige la causa más pequeña. No reescribas la arquitectura. Mantén los cambios técnicos marcados como experimentales.
+8. Actualiza PROJECT_GUIDE.md y el PR con resultados reales: archivos, qué probaste, errores encontrados y qué quedó pendiente.
 
-La prioridad es una base jugable pequeña, legible y mantenible que respete el proyecto. Leé la guía antes de tomar cualquier decisión narrativa o de arquitectura.
+## Lo que queda después de validar
+
+- Integrar texturas de terreno, concreto y equipo con materiales URP bien configurados; mantener paletas sobrias y superficies legibles. No reemplazar el blockout blanco sin conservar una escena/prototipo fácil de comparar.
+- Mejorar modelos de Blender e importarlos a Unity solo cuando se revise su escala, orientación, malla, pivotes y colisiones. Las vistas previas no prueban que el modelo sea final.
+- Acordar la cronología y transporte de la apertura antes de incorporar modelos históricos.
+- Continuar interacción y objetivos cuando el creador lo pida. No implementar armas completas, enemigos, rebobinado ni nuevas escenas por suposición.
+
+No incluyas en el PR los cambios locales ajenos al juego en ProjectSettings/ ni Assets/TutorialInfo/Icons/URP.png. No fusiones el PR; deja que lo revise el creador.

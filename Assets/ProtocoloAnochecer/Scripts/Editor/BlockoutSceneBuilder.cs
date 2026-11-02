@@ -21,6 +21,9 @@ public static class BlockoutSceneBuilder
                 "Cancelar"))
             return;
 
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            return;
+
         Material whiteMaterial = GetOrCreateWhiteMaterial();
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 

@@ -29,6 +29,9 @@ public static class OpeningSequenceBuilder
                 "Cancelar"))
             return;
 
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            return;
+
         Material screen = GetOrCreateScreenMaterial();
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         CreateTerrain(EuropeanFieldMaterialBuilder.GetOrCreate(white));

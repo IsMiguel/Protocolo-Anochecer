@@ -378,10 +378,13 @@ public static class BlockoutSceneBuilder
         camera.cullingMask &= ~(1 << 2);
         cameraObject.AddComponent<AudioListener>();
 
-        FirstPersonController movement = player.AddComponent<FirstPersonController>();
-        SerializedObject movementData = new SerializedObject(movement);
-        movementData.FindProperty("viewCamera").objectReferenceValue = camera;
-        movementData.ApplyModifiedPropertiesWithoutUndo();
+        player.AddComponent<PCGG.ProtocoloAnochecer.Prototype.Player.FPSInput>();
+        player.AddComponent<PCGG.ProtocoloAnochecer.Prototype.Player.FPSPlayerController>();
+        PCGG.ProtocoloAnochecer.Prototype.Player.FPSCameraLook cameraLook =
+            player.AddComponent<PCGG.ProtocoloAnochecer.Prototype.Player.FPSCameraLook>();
+        SerializedObject cameraLookData = new SerializedObject(cameraLook);
+        cameraLookData.FindProperty("cameraPivot").objectReferenceValue = cameraObject.transform;
+        cameraLookData.ApplyModifiedPropertiesWithoutUndo();
 
         Transform weaponRoot = new GameObject("First Person Arms and Weapon").transform;
         weaponRoot.SetParent(cameraObject.transform, false);

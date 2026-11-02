@@ -107,7 +107,7 @@ Revisado en la rama `main` del repositorio privado el 2026-11-02:
 - Input legacy también está presente en ProjectSettings; validar el modo activo antes de escribir bindings nuevos.
 - No hay evidencia revisada de tests de juego, asmdef de gameplay, CI de build o arquitectura de código propia. Estado: desconocido / todavía sin gameplay.
 
-La rama de contexto `codex/project-context` contiene la documentación de colaboración. Los modelos Blender hechos en la sesión anterior aún no están en GitHub; antes de integrarlos hay que llevarlos al proyecto y conservar los `.meta` de Unity. No asumir que el proyecto local fuera de GitHub y este repositorio remoto están sincronizados.
+La rama de contexto `codex/project-context` contiene la documentación de colaboración. Las fuentes Blender y previews se incluyen en el PR #1; dos exportaciones FBX provisionales de armas ya están en Assets/ProtocoloAnochecer/Art/Models/Weapons con metadatos estables. La importación y revisión visual dentro del Editor siguen pendientes. No asumir que el proyecto local fuera de GitHub y este repositorio remoto están sincronizados.
 
 ## 7. Plan recomendado de desarrollo
 
@@ -184,7 +184,7 @@ Seguir Docs/AI/CLAUDE_HANDOFF_PROMPT.md. El repositorio ya tiene dos prototipos 
 ### Arte fuente
 
 - ArtSource/Blender/ contiene prototipos fuente y vistas previas del Bell UH-1H, un campus chaqueño ficticio y armas de los años 40.
-- Son prototipos editables, no modelos finales ni assets importados en Unity. El terreno ya tiene un albedo y un normal map procedural tileables conectados por los generadores; falta revisarlos visualmente en Unity. El texturizado de los modelos sigue pendiente.
+- Los archivos .blend son fuentes editables y los modelos siguen siendo provisionales, no finales. Dos exportaciones FBX de armas están ahora en Assets/ProtocoloAnochecer/Art/Models/Weapons con GUIDs estables; falta comprobar su importación y apariencia dentro de Unity. El terreno ya tiene un albedo y un normal map procedural tileables conectados por los generadores; falta revisarlos visualmente. El texturizado de los modelos sigue pendiente.
 - El Bell UH-1H es de posguerra y choca con una apertura situada en los años 40. No incorporarlo a esa apertura hasta que el creador decida la cronología o el transporte.
 
 ### Estado de verificación
